@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","723","get started link","chromium","2026-09-17","passed","2026-09-17","","sample.spec.js","",""
+"","482","has title","chromium","2026-09-17","passed","2026-09-17","","sample.spec.js","",""
+"","1801","Complete DxTech flow","chromium","2026-09-17","passed","2026-09-17","","dxTech.spec.js","",""
