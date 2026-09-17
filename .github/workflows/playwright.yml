@@ -39,7 +39,7 @@ jobs:
         username: ${{ secrets.GMAIL_USERNAME }}
         password: ${{ secrets.GMAIL_APP_PASSWORD }}
         subject: "Playwright Report - ${{ github.repository }} - ${{ job.status }}"
-        to: you@example.com
+        to: vboomika03@gmail.com
         from: CI Bot <${{ secrets.GMAIL_USERNAME }}>
         body: |
           Playwright test run finished for ${{ github.repository }}.
