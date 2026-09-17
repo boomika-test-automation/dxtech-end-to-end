@@ -36,39 +36,5 @@ export class DxTechPage {
     await this.continueBtn.click();
   }
 
-  async publishersFlow() {
-    await this.page.getByRole('button', { name: 'Supply' }).click();
-    await this.page.getByRole('button', { name: 'Supply' }).click();
-
-    await this.publishersLink.click();
-    await this.page.getByRole('main').getByText('Publishers').click();
-    await this.page.getByRole('main').getByText('Publishers').hover();
-
-    await this.search.fill('Dasha');
-    await this.search.press('Enter');
-    await this.dashaLink.click();
-
-    await this.appsTab.click();
-    await this.domainsTab.click();
-    await this.manageDomains.click();
-    await this.cancelBtn.click();
-
-    await this.page.getByRole('table')
-      .getByRole('button')
-      .filter({ hasText: /^$/ })
-      .click();
-
-    await this.editMenu.click();
-    await this.cancelBtn.click();
-    await this.placementsTab.click();
-
-    await this.page.locator('mat-toolbar')
-      .getByRole('button')
-      .filter({ hasText: /^$/ })
-      .click();
-  }
-
-
-
 
 }
