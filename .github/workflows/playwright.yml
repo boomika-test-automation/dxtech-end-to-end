@@ -5,6 +5,11 @@ on:
   pull_request:
     branches: [ main, master ]
 
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     timeout-minutes: 60
@@ -36,9 +41,13 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      - name: Zip Allure report
+      - name: Deploy Allure report to GitHub Pages
         if: ${{ !cancelled() }}
-        run: zip -r allure-report.zip allure-report
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+          destination_dir: allure-report/${{ github.run_number }}
 
       - name: Send report email
         if: ${{ !cancelled() }}
@@ -49,7 +58,7 @@ jobs:
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
           subject: "Allure Report - ${{ github.repository }} - ${{ job.status }}"
-          to: you@example.com
+          to: vboomika03@gmail.com
           from: CI Bot <${{ secrets.GMAIL_USERNAME }}>
           body: |
             Playwright test run finished for ${{ github.repository }}.
@@ -57,7 +66,7 @@ jobs:
             Commit: ${{ github.sha }}
             Status: ${{ job.status }}
 
-            Full Allure report attached. Unzip and run "npx allure open allure-report" to view it properly (opening index.html directly may show a blank page).
+            View the Allure report here:
+            https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report/${{ github.run_number }}/
 
-            You can also download it from the Actions run artifacts.
-          attachments: allure-report.zip
+            (Report is also available as a downloadable artifact in the Actions run.)
