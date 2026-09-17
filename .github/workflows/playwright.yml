@@ -4,53 +4,60 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
+      - uses: actions/checkout@v4
 
-    - name: Generate Allure report
-      if: ${{ !cancelled() }}
-      run: npx allure generate allure-results --clean -o allure-report
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
 
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: allure-report
-        path: allure-report/
-        retention-days: 30
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Zip Allure report
-      if: ${{ !cancelled() }}
-      run: zip -r allure-report.zip allure-report
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
 
-    - name: Send report email
-      if: ${{ !cancelled() }}
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 465
-        username: ${{ secrets.GMAIL_USERNAME }}
-        password: ${{ secrets.GMAIL_APP_PASSWORD }}
-        subject: "Allure Report - ${{ github.repository }} - ${{ job.status }}"
-        to: you@example.com
-        from: CI Bot <${{ secrets.GMAIL_USERNAME }}>
-        body: |
-          Playwright test run finished for ${{ github.repository }}.
-          Branch: ${{ github.ref_name }}
-          Commit: ${{ github.sha }}
-          Status: ${{ job.status }}
+      - name: Run Playwright tests
+        run: npx playwright test
 
-          Full Allure report attached. You can also download it from the Actions run artifacts.
-        attachments: allure-report.zip
+      - name: Generate Allure report
+        if: ${{ !cancelled() }}
+        run: npx allure-commandline generate allure-results --clean -o allure-report
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: allure-report
+          path: allure-report/
+          retention-days: 30
+
+      - name: Zip Allure report
+        if: ${{ !cancelled() }}
+        run: zip -r allure-report.zip allure-report
+
+      - name: Send report email
+        if: ${{ !cancelled() }}
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: "Allure Report - ${{ github.repository }} - ${{ job.status }}"
+          to: you@example.com
+          from: CI Bot <${{ secrets.GMAIL_USERNAME }}>
+          body: |
+            Playwright test run finished for ${{ github.repository }}.
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Status: ${{ job.status }}
+
+            Full Allure report attached. Unzip and run "npx allure open allure-report" to view it properly (opening index.html directly may show a blank page).
+
+            You can also download it from the Actions run artifacts.
+          attachments: allure-report.zip
