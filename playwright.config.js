@@ -5,7 +5,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: false,
   timeout: 120000,
-  reporter: 'html',
+  reporter: [['html'], ['allure-playwright']],
 
   use: {
     headless: !!process.env.CI,
