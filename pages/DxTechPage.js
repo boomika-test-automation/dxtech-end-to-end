@@ -27,57 +27,6 @@ export class DxTechPage {
     this.manageDomains = page.getByRole('button', { name: 'Manage domains' });
     this.cancelBtn = page.getByRole('button', { name: 'Cancel' });
     this.editMenu = page.getByRole('menuitem', { name: 'Edit' });
-
-    // Placements
-    this.aditudeWeb = page.getByRole('link', { name: 'Aditude - Web' });
-    this.copyIcon = page.locator('.far.fa-copy');
-    this.pricingTab = page.getByRole('tab', { name: 'Pricing' });
-    this.demandIntegrationsTab =
-      page.getByRole('tab', { name: 'Demand integrations' });
-    this.manageIntegrations =
-      page.getByRole('button', { name: 'Manage Integrations' });
-    this.closeBtn = page.getByRole('button', { name: 'Close' });
-    this.targetingTab = page.getByRole('tab', { name: 'Targeting' });
-    this.exclusionsTab = page.getByRole('tab', { name: 'Exclusions' });
-    this.bidCacheTab =
-      page.getByRole('tab', { name: 'Bid cache / Stitcher' });
-    this.xpMappingTab =
-      page.getByRole('tab', { name: 'XP Parameters Mapping' });
-    this.overrideXP =
-      page.getByRole('switch', { name: 'Override Publisher XP' });
-    this.addXP = page.getByRole('button', { name: '+ Add XP Parameter' });
-    this.deleteBtn =
-      page.getByRole('button').filter({ hasText: 'delete' });
-
-    // Apps
-    this.exportBtn =
-      page.getByRole('button', { description: 'Export', exact: true });
-    this.columnsBtn =
-      page.getByRole('button', { description: 'Columns', exact: true });
-    this.statusCheckbox =
-      page.getByRole('checkbox', { name: 'Status' });
-    this.processedCheckbox =
-      page.getByRole('checkbox', { name: 'Processed' });
-    this.editAppMenu =
-      page.getByRole('menuitem', { name: 'Edit app' });
-    this.appRequestsTab =
-      page.getByRole('tab', { name: 'App requests' });
-    this.last7Days =
-      page.getByRole('radio', { name: 'Last 7 days' });
-    this.complianceTab =
-      page.getByRole('tab', { name: 'Compliance' });
-
-    // Lists
-    this.editDescriptionBtn =
-      page.getByRole('button', { description: 'Edit', exact: true });
-    this.rewriteLink =
-      page.getByRole('link', { name: 'Rewrite' });
-    this.addRewrite =
-      page.getByRole('button', { name: 'Add Rewrite' });
-    this.schainLink =
-      page.getByRole('link', { name: 'SCHAIN' });
-    this.schainRow =
-      page.getByRole('row', { name: 'ds 0 Items' });
   }
 
   async login() {
@@ -119,80 +68,7 @@ export class DxTechPage {
       .click();
   }
 
-  async placementsFlow() {
-    await this.placementsLink.click();
-    await this.aditudeWeb.click();
-    await this.copyIcon.click();
 
-    await this.pricingTab.click();
-    await this.demandIntegrationsTab.click();
-    await this.manageIntegrations.click();
-    await this.closeBtn.click();
-
-    await this.targetingTab.click();
-    await this.exclusionsTab.click();
-    await this.bidCacheTab.click();
-    await this.xpMappingTab.click();
-
-    await this.overrideXP.click();
-    await this.addXP.click();
-    await this.deleteBtn.click();
-    await this.overrideXP.click();
-
-    await this.emptyButton.click();
-  }
-
-  async appsFlow() {
-    await this.appsLink.click();
-
-    const downloadPromise = this.page.waitForEvent('download');
-    await this.exportBtn.click();
-    await downloadPromise;
-
-    await this.columnsBtn.click();
-    await this.statusCheckbox.check();
-    await this.statusCheckbox.uncheck();
-    await this.columnsBtn.click();
-
-    await this.emptyButton.nth(4).click();
-    await this.editAppMenu.click();
-
-    await this.emptyButton.click();
-    await this.appRequestsTab.click();
-
-    await this.emptyButton.nth(3).click();
-    await this.last7Days.click();
-
-    await this.exportBtn.click();
-    await this.columnsBtn.click();
-
-    const download1Promise = this.page.waitForEvent('download');
-    await this.processedCheckbox.uncheck();
-    await download1Promise;
-
-    await this.columnsBtn.click();
-    await this.processedCheckbox.check();
-    await this.columnsBtn.click();
-
-    await this.emptyButton.nth(3).click();
-    await this.complianceTab.click();
-  }
-
-  async listsFlow() {
-    await this.listsLink.click();
-
-    await this.editDescriptionBtn.click();
-    await this.emptyButton.click();
-
-    await this.rewriteLink.click();
-    await this.addRewrite.click();
-    await this.emptyButton.click();
-
-    await this.schainLink.click();
-    await this.schainRow.locator('button').click();
-    await this.editMenu.click();
-    await this.emptyButton.click();
-  }
 
 
 }
