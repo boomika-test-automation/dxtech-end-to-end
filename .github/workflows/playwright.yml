@@ -25,3 +25,27 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+
+    - name: Zip HTML report
+      if: ${{ !cancelled() }}
+      run: zip -r playwright-report.zip playwright-report
+
+    - name: Send report email
+      if: ${{ !cancelled() }}
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{ secrets.GMAIL_USERNAME }}
+        password: ${{ secrets.GMAIL_APP_PASSWORD }}
+        subject: "Playwright Report - ${{ github.repository }} - ${{ job.status }}"
+        to: you@example.com
+        from: CI Bot <${{ secrets.GMAIL_USERNAME }}>
+        body: |
+          Playwright test run finished for ${{ github.repository }}.
+          Branch: ${{ github.ref_name }}
+          Commit: ${{ github.sha }}
+          Status: ${{ job.status }}
+
+          Full HTML report attached. You can also download it from the Actions run artifacts.
+        attachments: playwright-report.zip
